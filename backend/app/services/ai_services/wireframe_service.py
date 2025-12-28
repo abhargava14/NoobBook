@@ -80,7 +80,6 @@ class WireframeService:
             )
 
             content = get_source_content(project_id, source_id, max_chars=12000)
-            print(f"[Wireframe] Content length: {len(content) if content else 0}")
             if not content or content.startswith("Error"):
                 raise ValueError("No content found for source")
 
@@ -112,14 +111,9 @@ class WireframeService:
             )
 
             # Extract tool use result
-            print(f"[Wireframe] Response stop_reason: {response.get('stop_reason')}")
-            print(f"[Wireframe] Content blocks: {len(response.get('content_blocks', []))}")
-
             tool_inputs_list = claude_parsing_utils.extract_tool_inputs(
                 response, "generate_wireframe"
             )
-
-            print(f"[Wireframe] Tool inputs list: {tool_inputs_list}")
 
             if not tool_inputs_list or "elements" not in tool_inputs_list[0]:
                 raise ValueError("Failed to generate wireframe - no elements returned")
